@@ -1,0 +1,11 @@
+stages:   
+  data_visualization:     #paso/stage del pipeline
+    cmd: python src/data_visualization.py
+    deps:
+      - src/data_visualization.py            #depende de que exista el archivo
+      - data/raw/datos_creditos.csv         #depende de que existan los datos
+      - data/raw/datos_creditos.csv         #depende de que existan los datos
+    outs:
+      - docs/figures/target_distribution.png
+      - docs/figures/correlation_heatmap_creditos.png
+      - docs/figures/correlation_heatmap_tarjetas.png

@@ -1,0 +1,30 @@
+schema: '2.0'
+stages:
+  data_visualization:
+    cmd: python src/data_visualization.py
+    deps:
+    - path: data/raw/datos_creditos.csv
+      hash: md5
+      md5: 3b26edd22e8827f890d7cd32efe475b7
+      size: 663047
+    - path: data/raw/datos_creditos.csv
+      hash: md5
+      md5: 3b26edd22e8827f890d7cd32efe475b7
+      size: 663047
+    - path: src/data_visualization.py
+      hash: md5
+      md5: ce5da05435bc0687c70afb9fb8756f0d
+      size: 2268
+    outs:
+    - path: docs/figures/correlation_heatmap_creditos.png
+      hash: md5
+      md5: c261236f9486b6c3017ade2cf97cd0e3
+      size: 77088
+    - path: docs/figures/correlation_heatmap_tarjetas.png
+      hash: md5
+      md5: a58da1be7b3a1ed4b2d928ca90923e65
+      size: 52584
+    - path: docs/figures/target_distribution.png
+      hash: md5
+      md5: 4fdb2a837bf1f2e1f6fa5ca95ac99834
+      size: 21581
