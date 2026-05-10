@@ -1,6 +1,7 @@
 # Se importan las librerías necesarias y se suprimen las advertencias
 import pandas as pd
 #import numpy as np
+import os
 
 def process_data(datos_creditos: str = "data/raw/datos_creditos.csv",
                 datos_tarjetas: str = "data/raw/datos_tarjetas.csv",
@@ -66,6 +67,21 @@ def process_data(datos_creditos: str = "data/raw/datos_creditos.csv",
     # Se exportan los datos procesados a un nuevo archivo CSV
     ################################################################################
     df_integrado.to_csv(output_dir + 'datos_integrados.csv', index=False)
+
+    ################################################################################
+    # OPCIÓN EXTRA (ejemplo): agregar la generación del reporte de metadatos a un txt
+    # o HTML con ydata-profiling.
+    ################################################################################
+
+    try:
+        from ydata_profiling import ProfileReport
+        print("📊 Generando reporte de metadatos HTML (esto puede tomar unos segundos)...")
+        os.makedirs("docs", exist_ok=True)
+        profile = ProfileReport(df_integrado, title="Reporte de Metadatos - Datos Integrados", minimal=True)
+        profile.to_file("docs/reporte_metadatos.html")
+        print("✅ Reporte HTML generado en docs/reporte_metadatos.html")
+    except ImportError:
+        print("La librería 'ydata-profiling' no está instalada. Omitiendo la generación del reporte HTML.")
 
 if __name__ == "__main__":
     process_data()
