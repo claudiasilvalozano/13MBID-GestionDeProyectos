@@ -143,3 +143,36 @@ def test_unicidad_ids(datos_creditos, datos_tarjetas):
     # Validar que no haya IDs duplicados en el dataset de tarjetas
     duplicados_tarjetas = datos_tarjetas["id_cliente"].duplicated().sum()
     assert duplicados_tarjetas == 0, f"Error de calidad: Se encontraron {duplicados_tarjetas} IDs duplicados en el dataset de tarjetas."
+
+def test_imprimir_resultados_crisp_dm(datos_creditos, datos_tarjetas):
+    print("\n" + "="*50)
+    print("RESULTADOS PARA EL INFORME CRISP-DM")
+    print("="*50)
+
+    # 1. CONSISTENCIA: UNICIDAD
+    print("\n--- DIMENSIÓN DE CONSISTENCIA: UNICIDAD ---")
+    dup_creditos = datos_creditos["id_cliente"].duplicated().sum()
+    dup_tarjetas = datos_tarjetas["id_cliente"].duplicated().sum()
+    print(f"Duplicados en créditos: {dup_creditos}")
+    print(f"Duplicados en tarjetas: {dup_tarjetas}")
+
+    # 2. COMPLETITUD: NULOS EN CRÉDITOS
+    print("\n--- DIMENSIÓN DE COMPLETITUD: CRÉDITOS ---")
+    filas_totales_c = len(datos_creditos)
+    nulos_por_columna_c = datos_creditos.isnull().sum()
+    cols_con_nulos = nulos_por_columna_c[nulos_por_columna_c > 0].index.tolist()
+    filas_con_nulos_c = datos_creditos.isnull().any(axis=1).sum()
+    pct_nulos_c = (filas_con_nulos_c / filas_totales_c) * 100
+
+    print(f"Atributos con nulos: {cols_con_nulos}")
+    print(f"Filas totales con nulos: {filas_con_nulos_c}")
+    print(f"Porcentaje del dataset: {pct_nulos_c:.2f}%")
+
+    # 3. COMPLETITUD: NULOS EN TARJETAS
+    print("\n--- DIMENSIÓN DE COMPLETITUD: TARJETAS ---")
+    filas_totales_t = len(datos_tarjetas)
+    filas_con_nulos_t = datos_tarjetas.isnull().any(axis=1).sum()
+    pct_nulos_t = (filas_con_nulos_t / filas_totales_t) * 100
+
+    print(f"Filas totales con nulos: {filas_con_nulos_t}")
+    print(f"Porcentaje del dataset: {pct_nulos_t:.2f}%")
