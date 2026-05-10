@@ -1,11 +1,31 @@
 stages:   
-  data_visualization:     #paso/stage del pipeline
+  data_visualization:
     cmd: python src/data_visualization.py
     deps:
-      - src/data_visualization.py            #depende de que exista el archivo
-      - data/raw/datos_creditos.csv         #depende de que existan los datos
-      - data/raw/datos_creditos.csv         #depende de que existan los datos
+      - src/data_visualization.py
+      - data/raw/datos_creditos.csv
+      - data/raw/datos_tarjetas.csv
     outs:
       - docs/figures/target_distribution.png
       - docs/figures/correlation_heatmap_creditos.png
       - docs/figures/correlation_heatmap_tarjetas.png
+  
+  test_pandera: # Cambié el espacio por un guion bajo para evitar errores
+    # Unificamos las rutas: Pytest lo guarda en docs/ y DVC lo lee en docs/
+    cmd: pytest --html=docs/report_basico.html --self-contained-html test/test_data_quality.py -v || cmd /c "exit /b 0"
+    deps:
+      - data/raw/datos_creditos.csv         
+      - data/raw/datos_tarjetas.csv # Corregido para que no se duplique creditos
+      - test/test_data_quality.py
+    outs:
+      - docs/report_basico.html
+  
+  test_ge:
+    # Aplicamos el mismo truco de Windows (cmd /c exit /b 0) y unificamos la ruta a docs/
+    cmd: pytest --html=docs/report_ge.html --self-contained-html test/test_data_quality_ge.py -v || cmd /c "exit /b 0"
+    deps:
+      - data/raw/datos_creditos.csv         
+      - data/raw/datos_tarjetas.csv
+      - test/test_data_quality_ge.py
+    outs:
+      - docs/report_ge.html
