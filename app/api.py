@@ -11,9 +11,6 @@ app = FastAPI(
 )
 
 class PredictionRequest(BaseModel):
-    #################################################################################
-    # TODO: adaptar el modelo según los resultados de la fase de preparación de datos
-    ##################################################################################
     edad: int = Field(..., description="Edad del cliente")
     antiguedad_empleado: float = Field(..., description="Antigüedad del empleado")
     situacion_vivienda: str = Field(..., description="Situación de la vivienda")
@@ -33,6 +30,9 @@ class PredictionRequest(BaseModel):
     capacidad_pago: float = Field(..., description="Capacidad de pago")
     operaciones_mensuales: float = Field(..., description="Operaciones mensuales")
     presion_financiera: float = Field(..., description="Presión financiera")
+    # TODO: done --- AQUÍ AÑADIMOS LAS COLUMNAS QUE FALTAN (Creadas durante la preparación de los datos)---
+    gasto_promedio_operacion: float = Field(..., description="Gasto promedio por operación")
+    estabilidad_laboral: float = Field(..., description="Indicador de estabilidad laboral (SI/NO)")
 
     class Config:
         json_schema_extra = {
@@ -55,7 +55,10 @@ class PredictionRequest(BaseModel):
                 "personas_a_cargo": 3.0,
                 "capacidad_pago": 0.104167,
                 "operaciones_mensuales": 3.5,
-                "presion_financiera": 0.17125
+                "presion_financiera": 0.17125,
+                # Añadir columnas 
+                "gasto_promedio_operacion": 27.238095,
+                "estabilidad_laboral": 0.238095
             }
         }
 
